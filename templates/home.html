@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVAL.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='bg.png') }}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Enhanced fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px); /* Start slightly below */
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced pop-up animation */
+        .pop-up {
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg); /* Start smaller and rotated */
+            animation: popUp 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes popUp {
+            0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Custom font and text shadow */
+        .aval-text {
+            font-family: 'Arial Black', sans-serif; /* Default bold font */
+            font-size: 100px; /* Increased font size */
+            font-weight: bold; /* Ensure text is bold */
+            text-shadow: 8px 8px 4px rgba(0, 0, 0, 0.5); /* Adjusted shadow */
+            color: #000000; /* Black text */
+        }
+
+        /* Flex container for logo and text */
+        .flex-container {
+            display: flex;
+            align-items: center; /* Vertically center items */
+            justify-content: center; /* Horizontally center items */
+            gap: 20px; /* Space between logo and text */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+    <div id="home" class="text-center">
+        <div class="flex-container">
+            <h1 class="aval-text fade-in">AVAL.AI</h1>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="pop-up w-56 h-56"> <!-- Increased logo size -->
+        </div>
+    </div>
+
+    <script>
+        // Redirect to chatbot after 5 seconds
+        setTimeout(() => {
+            window.location.href = "/chatbot";
+        }, 5000); // Changed from 3000 to 5000 milliseconds (5 seconds)
+    </script>
+</body>
+</html>

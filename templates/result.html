@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result - AVAL.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #000;
+            background-image: url("{{ url_for('static', filename='bg.png') }}"); /* Use Flask's url_for for static files */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Arial Black', sans-serif;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque for better readability */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .text-black {
+            color: #000;
+        }
+        .arial-black {
+            font-family: 'Arial Black', sans-serif;
+        }
+        .result-text {
+            font-size: 1.5rem; /* Larger text for better readability */
+            margin-bottom: 1rem;
+        }
+        .button {
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Card Container -->
+    <div class="card p-8 rounded-lg shadow-lg w-full text-center" style="max-width: 800px;">
+        <!-- Title -->
+        <h1 class="text-5xl font-bold text-black mb-6 arial-black">PCOS Prediction Result</h1>
+
+        <!-- Prediction Result -->
+        <div class="result-text">
+            <p class="text-2xl text-black"><strong>Prediction:</strong> {{ result }}</p>
+        </div>
+
+        <!-- Acne and Hirsutism Results -->
+        <div class="mt-6 space-y-2">
+            <p class="text-2xl text-black"><strong>Acne Detected:</strong> {{ acne_detected }}</p>
+            <p class="text-2xl text-black"><strong>Hirsutism Detected:</strong> {{ hirsutism_detected }}</p>
+        </div>
+
+        <!-- Recommendations Prompt -->
+        <div class="mt-8">
+            <p class="text-2xl text-black mb-4">Do you need lifestyle recommendations to improve your health?</p>
+            <div class="flex justify-center space-x-4">
+                <!-- Yes Button -->
+                <a href="/recommendations" class="button bg-green-500 text-black py-3 px-6 rounded-md hover:bg-green-600">
+                    Yes 📃
+                </a>
+                <!-- No Button -->
+                <a href="/" class="button bg-gray-500 text-white py-3 px-6 rounded-md hover:bg-gray-600">
+                    No, Go Back 🏠
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

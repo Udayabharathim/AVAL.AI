@@ -1,0 +1,6 @@
+train: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\acne\train
+val: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\acne\valid
+test: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\acne\test
+
+nc: 1  # Number of classes (modify if needed)
+names: ["acne"]

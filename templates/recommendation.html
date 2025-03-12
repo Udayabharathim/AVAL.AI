@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .result h2 {
+            color: #333;
+        }
+        .result p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PCOS Lifestyle Recommendations</h1>
+        <form action="/recommendation" method="POST">
+            <label for="user_input">What kind of recommendations are you looking for?</label>
+            <input type="text" id="user_input" name="user_input" placeholder="e.g., Get diet and exercise recommendations" required>
+            <input type="submit" value="Get Recommendations">
+        </form>
+
+        {% if diet_plan or exercise_plan %}
+        <div class="result">
+            <h2>Your Personalized Recommendations</h2>
+            {% if diet_plan %}
+            <h3>Diet Plan</h3>
+            {{ diet_plan|safe }}
+            {% endif %}
+            {% if exercise_plan %}
+            <h3>Exercise Plan</h3>
+            {{ exercise_plan|safe }}
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
