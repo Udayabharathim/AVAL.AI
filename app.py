@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from ultralytics import YOLO
 from recommendation import pcos_recommendation_chatbot
+
 app = Flask(__name__)
 
 # Load the saved model
@@ -148,13 +149,9 @@ def result():
     # Pass the data to the result.html template
     return render_template("result.html", result=result, acne_detected=acne_detected, hirsutism_detected=hirsutism_detected)
 
-@app.route("/recommendation", methods=["GET", "POST"])
+@app.route("/recommendation")
 def recommendations():
-    if request.method == "POST":
-        user_input = request.form.get("user_input", "").strip().lower()
-        diet_plan, exercise_plan = pcos_recommendation_chatbot(user_input)
-        return render_template("recommendation.html", diet_plan=diet_plan, exercise_plan=exercise_plan)
-    return render_template("recommendation.html")
+    return render_template("recommendations.html")
 
 if __name__ == "__main__":
     # Create uploads directory if it doesn't exist
