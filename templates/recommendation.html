@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS Lifestyle Recommendation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url("static/bg.png"); /* Ensure the image exists in the static folder */
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial Black', sans-serif;
+        }
+        .chat-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px; /* Reduced padding */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%; /* Set width to 90% of the parent container */
+            max-width: 600px; /* Reduced max-width */
+            margin: 0 auto; /* Center the container horizontally */
+        }
+        .chat {
+            margin-bottom: 10px; /* Reduced margin */
+        }
+        .chat-bot {
+            display: flex;
+            align-items: center;
+        }
+        .chat-bot img {
+            width: 60px; /* Reduced logo size */
+            height: 60px; /* Reduced logo size */
+            border-radius: 100%;
+            margin-right: 10px; /* Reduced margin */
+        }
+        .chat-user {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .chat-user img {
+            width: 45px; /* Reduced logo size */
+            height: 45px; /* Reduced logo size */
+            border-radius: 100%;
+            margin-left: 10px; /* Reduced margin */
+        }
+        .chat-bot .text, .chat-user .text {
+            background-color: #f3f3f3;
+            padding: 10px; /* Reduced padding */
+            border-radius: 10px;
+            max-width: 100%; /* Allow text to take full width */
+            font-size: 20px; /* Reduced font size */
+            line-height: 1.4; /* Adjusted line height for better readability */
+            word-wrap: break-word; /* Ensure text wraps instead of cutting off */
+            overflow-wrap: break-word; /* Ensure text wraps */
+            white-space: normal; /* Allow text to wrap naturally */
+        }
+        .chat-user .text {
+            background-color:  #f58aae;
+        }
+        .input-box {
+            display: flex;
+            flex-direction: column; /* Stack input and button vertically */
+            gap: 10px; /* Reduced gap */
+            margin-top: 20px; /* Reduced margin */
+            display: none; /* Hidden by default */
+        }
+        .input-box input, .input-box button {
+            padding: 10px; /* Reduced padding */
+            border-radius: 50px;
+            border: 1px solid #ccc;
+            font-size: 20px; /* Reduced font size for input and button */
+        }
+        .input-box input {
+            flex: 1;
+        }
+        .input-box button {
+            background-color: #f58aae;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 15px;
+            width: 60px; /* Reduced width */
+        }
+        .input-box button:hover {
+            background-color: #e91e63;
+        }
+        #chatbot {
+            max-height: 300px; /* Reduced height for scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding-right: 10px; /* Add padding to avoid scrollbar overlap */
+            display: none; /* Hidden by default */
+        }
+        #startContainer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #startContainer h1 {
+            font-size: 30px; /* Reduced font size */
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-family: 'Arial Black', sans-serif;
+        }
+        #startButton {
+            background-color: #4CAF50; /* Green color */
+            color: white;
+            padding: 10px 20px; /* Reduced padding */
+            border: none;
+            border-radius: 10px;
+            font-size: 20px; /* Reduced font size */
+            cursor: pointer;
+        }
+        #startButton:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="chat-container">
+        <!-- Start Container -->
+        <div id="startContainer">
+            <h1>PCOS Lifestyle Recommendation</h1>
+            <button id="startButton">Start</button>
+        </div>
+
+        <!-- Chatbot -->
+        <div id="chatbot">
+            <!-- Chatbot messages will appear here -->
+        </div>
+
+        <!-- Input Container -->
+        <div class="input-box" id="inputContainer">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="text" id="userInput" placeholder="Type your answer..." />
+                <img src="static/user-logo.png" alt="User" style="width: 45px; height: 45px; border-radius: 100%;">
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" onclick="submitAnswer()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "Do you usually have a busy morning schedule? (yes/no)",
+            "On average, how many hours do you spend at work or school each day?",
+            "How often do you exercise each week? (never/1-2 times/3-5 times/daily)",
+            "Do you prefer high-intensity or low-intensity exercises? (high/low)",
+            "When do you prefer to exercise? (morning/evening/both)",
+            "How much time can you dedicate to each exercise session? (in minutes)"
+        ];
+
+        const chatbot = document.getElementById("chatbot");
+        const userInput = document.getElementById("userInput");
+        const inputContainer = document.getElementById("inputContainer");
+        const startContainer = document.getElementById("startContainer");
+        const startButton = document.getElementById("startButton");
+        let currentQuestion = 0;
+        const answers = {};
+
+        // Function to display text with a typing effect
+        function typeText(element, text, speed = 50) {
+            let index = 0;
+            return new Promise((resolve) => {
+                function type() {
+                    if (index < text.length) {
+                        element.textContent += text.charAt(index);
+                        index++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        async function displayQuestion() {
+            if (currentQuestion >= questions.length) {
+                // All questions answered, send data to the backend
+                sendDataToBackend();
+                return;
+            }
+
+            const botDiv = document.createElement("div");
+            botDiv.className = "chat chat-bot";
+            botDiv.innerHTML = `
+                <img src="static/chtbot-logo.png" alt="Chatbot">
+                <div class="text"></div>
+            `;
+            chatbot.appendChild(botDiv);
+
+            const textElement = botDiv.querySelector(".text");
+            await typeText(textElement, questions[currentQuestion]);
+
+            inputContainer.style.display = "flex";
+            userInput.focus();
+        }
+
+        function submitAnswer() {
+            if (userInput.value.trim() === "") return;
+
+            // Capture user answer
+            const userDiv = document.createElement("div");
+            userDiv.className = "chat chat-user";
+            userDiv.innerHTML = `
+                <div class="text">${userInput.value}</div>
+                <img src="static/user-logo.png" alt="User">
+            `;
+            chatbot.appendChild(userDiv);
+
+            // Save the answer
+            answers[questions[currentQuestion]] = userInput.value;
+            userInput.value = "";
+
+            currentQuestion++;
+            displayQuestion();
+        }
+
+        async function sendDataToBackend() {
+            // Prepare data to send to the backend
+            const data = {
+                busy_morning: answers[questions[0]],
+                work_hours: parseInt(answers[questions[1]]),
+                exercise_freq: answers[questions[2]],
+                preferred_exercise_type: answers[questions[3]],
+                time_of_day_exercise: answers[questions[4]],
+                exercise_duration: parseInt(answers[questions[5]])
+            };
+
+            // Send data to the backend
+            const response = await fetch("/generate-plan", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            // Display the personalized plan
+            displayPlan(result.diet_table_data, result.exercise_table_data);
+        }
+
+        function displayPlan(dietTableData, exerciseTableData) {
+            // Hide input container
+            inputContainer.style.display = "none";
+
+            // Display diet plan
+            const dietPlanDiv = document.createElement("div");
+            dietPlanDiv.innerHTML = `
+                <h2>Personalized Weekly Diet Plan</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            ${dietTableData[0].map(header => `<th>${header}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${dietTableData.slice(1).map(row => `
+                            <tr>
+                                ${row.map(cell => `<td>${cell}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            chatbot.appendChild(dietPlanDiv);
+
+            // Display exercise plan
+            const exercisePlanDiv = document.createElement("div");
+            exercisePlanDiv.innerHTML = `
+                <h2>Personalized Weekly Exercise Plan</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            ${exerciseTableData[0].map(header => `<th>${header}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${exerciseTableData.slice(1).map(row => `
+                            <tr>
+                                ${row.map(cell => `<td>${cell}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            chatbot.appendChild(exercisePlanDiv);
+        }
+
+        // Start the chatbot when the Start button is clicked
+        startButton.addEventListener("click", () => {
+            startContainer.style.display = "none"; // Hide the start container
+            chatbot.style.display = "block"; // Show the chatbot
+            inputContainer.style.display = "flex"; // Show the input container
+            displayQuestion(); // Start the chatbot
+        });
+    </script>
+</body>
+</html>

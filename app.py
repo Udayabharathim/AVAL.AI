@@ -151,7 +151,7 @@ def result():
 
 @app.route("/recommendation")
 def recommendations():
-    return render_template("recommendations.html")
+    return render_template("recommendation.html")
 
 if __name__ == "__main__":
     # Create uploads directory if it doesn't exist
