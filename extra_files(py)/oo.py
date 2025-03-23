@@ -49,23 +49,23 @@
 # print("✅ Labels fixed successfully!")
 import os
 
-labels_dir = r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\hirsuitsm\train\labels"
+label_dir = r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\pigmentation\valid\labels"
 
-for file in os.listdir(labels_dir):
+for file in os.listdir(label_dir):
     if file.endswith(".txt"):
-        file_path = os.path.join(labels_dir, file)
+        file_path = os.path.join(label_dir, file)
         with open(file_path, "r") as f:
             lines = f.readlines()
 
-        new_lines = []
+        fixed_lines = []
         for line in lines:
             parts = line.strip().split()
-            if len(parts) == 6:  # If it has 6 columns, remove the last one
-                new_lines.append(" ".join(parts[:5]) + "\n")
+            if len(parts) == 6:  # Incorrect format
+                fixed_lines.append(" ".join(parts[:5]))  # Keep only first 5 values
             else:
-                new_lines.append(line)
+                fixed_lines.append(line.strip())
 
         with open(file_path, "w") as f:
-            f.writelines(new_lines)
-
-print("Label files fixed!")
+            f.write("\n".join(fixed_lines))
+    
+print("✅ Labels fixed successfully!")

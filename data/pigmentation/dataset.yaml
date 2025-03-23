@@ -1,6 +1,0 @@
-train: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\pigmentation\train
-val: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\pigmentation\valid
-test: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\pigmentation\test
-
-nc: 1  # Number of classes (modify if needed)
-names: ["hirsuitsm"]  # Names of the classes (modify if needed)

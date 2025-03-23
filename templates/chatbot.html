@@ -115,7 +115,6 @@
             background-color: #45a049; /* Darker green on hover */
         }
     </style>
-</style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
     <div class="chat-container">
@@ -145,20 +144,18 @@
     <script>
         const questions = [
             "What is your age (in years)?",
-            "What is your weight (in kg)?",
+            "What is your current weight (in kg)?",
+            "What was your weight 3 months ago (in kg)?",
             "What is your height (in cm)?",
             "What is your blood group?",
             "How many months between your periods?",
-            "Have you gained weight recently? (yes/no)",
-            "Do you have excess body/facial hair? (yes/no)",
-            "Do you have skin darkening? (yes/no)",
             "Do you experience hair loss? (yes/no)",
             "Do you consume fast food regularly? (yes/no)",
             "Do you exercise regularly? (yes/no)",
             "Do you experience mood swings? (yes/no)",
             "Are your periods regular? (yes/no)",
             "What is your period duration (in days)?",
-            "Please upload an image for acne and hirsutism detection."
+            "Please upload an image for acne, facial hair, and skin darkening detection."
         ];
 
         const chatbot = document.getElementById("chatbot");
@@ -207,6 +204,7 @@
             inputContainer.style.display = "flex";
             if (questions[currentQuestion].includes("upload")) {
                 userInput.type = "file";
+                userInput.accept = "image/*"; // Allow only image files
             } else {
                 userInput.type = "text";
             }
@@ -232,34 +230,32 @@
             currentQuestion++;
             displayQuestion();
         }
-
         function sendDataToBackend() {
-            const formData = new FormData();
+    const formData = new FormData();
 
-            // Add all answers to the FormData object
-            for (const [question, answer] of Object.entries(answers)) {
-                if (answer instanceof File) {
-                    formData.append(question, answer); // Append the uploaded file
-                } else {
-                    formData.append(question, answer); // Append other form data
-                }
-            }
-
-            // Send the data to the backend using fetch
-            fetch("/chatbot", {
-                method: "POST",
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Redirect to the result page
-                window.location.href = `/result?result=${data.result}&acne_detected=${data.acne_detected}&hirsutism_detected=${data.hirsutism_detected}`;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+    // Add all answers to the FormData object
+    for (const [question, answer] of Object.entries(answers)) {
+        if (answer instanceof File) {
+            formData.append("image", answer); // Append the uploaded file under the key "image"
+        } else {
+            formData.append(question, answer); // Append other form data
         }
+    }
 
+    // Send the data to the backend using fetch
+    fetch("/chatbot", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Redirect to the result page
+        window.location.href = `/result?result=${data.result}&acne_detected=${data.acne_detected}&hirsutism_detected=${data.hirsutism_detected}&skin_darkening_detected=${data.skin_darkening_detected}`;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
         // Start the chatbot when the Start button is clicked
         startButton.addEventListener("click", () => {
             startContainer.style.display = "none"; // Hide the start container

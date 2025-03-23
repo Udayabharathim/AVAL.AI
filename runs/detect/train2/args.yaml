@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolov8n.pt
-data: C:\Users\Elitebook 840 G6\Documents\AVAL2\data\pigmentation\dataset.yaml
+data: data\pigmentation\dataset.yml
 epochs: 50
 time: null
 patience: 100
