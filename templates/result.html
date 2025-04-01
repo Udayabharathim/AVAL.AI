@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: #000;
+            
             background-image: url("{{ url_for('static', filename='bg.png') }}");
             background-size: cover;
             background-position: center;
@@ -15,7 +15,7 @@
             font-family: 'Arial Black', sans-serif;
         }
         .card {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgb(255, 255, 255);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -52,15 +52,15 @@
     <!-- Card Container -->
     <div class="card text-center w-full max-w-2xl">
         <!-- Title -->
-        <h1 class="text-5xl font-bold text-white mb-6 arial-black glow-text">PCOS Prediction Result</h1>
+        <h1 class="text-5xl font-bold text-black mb-6 arial-black glow-text">PCOS Prediction Result</h1>
 
         <!-- Prediction Result -->
         <div class="result-text">
-            <p class="text-3xl text-white"><strong>Prediction:</strong> <span class="glow-text">{{ result }}</span></p>
+            <p class="text-3xl text-black"><strong>Prediction:</strong> <span class="glow-text">{{ result }}</span></p>
         </div>
 
         <!-- Acne, Hirsutism, and Skin Darkening Results -->
-        <div class="mt-6 space-y-3 text-white">
+        <div class="mt-6 space-y-3 text-black">
             <p class="text-2xl"><strong>Acne Detected:</strong> {{ acne_detected }}</p>
             <p class="text-2xl"><strong>Hirsutism Detected:</strong> {{ hirsutism_detected }}</p>
             <p class="text-2xl"><strong>Skin Darkening Detected:</strong> {{ skin_darkening_detected }}</p>
@@ -68,7 +68,7 @@
 
         <!-- Go Back Home Button -->
         <div class="mt-8">
-            <a href="/" class="button bg-gray-500 text-white hover:bg-gray-600">
+            <a href="/" class="button bg-green-500 text-white hover:bg-green-600">
                 Go Back Home 🏠
             </a>
         </div>

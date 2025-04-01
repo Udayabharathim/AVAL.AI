@@ -1,84 +1,3 @@
-# import pandas as pd
-# import joblib
-# from sklearn.model_selection import train_test_split, GridSearchCV
-# from sklearn.ensemble import RandomForestClassifier
-# from sklearn.preprocessing import LabelEncoder, StandardScaler
-# from sklearn.metrics import accuracy_score, classification_report
-
-# # Load dataset
-# print("Loading dataset...")
-# df = pd.read_csv(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\Balanced_PCOS_Dataset.csv")
-# print("Dataset loaded successfully!")
-
-# # Standardize column names
-# df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_").str.replace("-", "_").str.replace(r"[^\w]", "", regex=True)
-
-# # Rename target column
-# df.rename(columns={"have_you_been_diagnosed_with_pcospcod": "pcos"}, inplace=True)
-
-# # Fix height column name
-# df.rename(columns={"height_in_cm__feet": "height"}, inplace=True)
-
-# # Compute BMI
-# df["bmi"] = df["weight_in_kg"] / (df["height"] / 100) ** 2
-
-# # Encode categorical variables
-# label_enc = LabelEncoder()
-# df["are_your_periods_regular_"] = label_enc.fit_transform(df["are_your_periods_regular_"])
-# df["blood_group"] = label_enc.fit_transform(df["blood_group"])
-
-# # Check for missing values
-# print("\nMissing values in dataset:")
-# print(df.isnull().sum())
-
-# # Select features and target
-# features = [
-#     "age_in_years", "weight_in_kg", "height", "bmi", "blood_group", "months_between_periods", 
-#     "weight_gain_recently", "excess_body_facial_hair", "skin_darkening", "hair_loss", 
-#     "acne", "fast_food", "exercise", "are_your_periods_regular_", "period_duration"
-# ]
-# target = "pcos"
-# X = df[features]
-# y = df[target]
-
-# # Apply feature scaling (Standardization)
-# scaler = StandardScaler()
-# X_scaled = scaler.fit_transform(X)
-
-# # Train-test split
-# X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42, stratify=y)
-
-# # Hyperparameter tuning for RandomForestClassifier
-# param_grid_rf = {
-#     "n_estimators": [200, 300, 400],  # Increased number of trees
-#     "max_depth": [None, 10, 20],  # Deeper trees
-#     "min_samples_split": [2, 5],  # Prevent overfitting
-#     "min_samples_leaf": [1, 2],  # Improve generalization
-#     "max_features": ["sqrt", "log2"]  # Best feature selection
-# }
-
-# rf = RandomForestClassifier(random_state=42)
-# grid_search_rf = GridSearchCV(rf, param_grid_rf, cv=5, scoring='accuracy', n_jobs=-1)
-# grid_search_rf.fit(X_train, y_train)
-
-# # Best model selection
-# best_rf = grid_search_rf.best_estimator_
-
-# # Make predictions
-# y_pred_rf = best_rf.predict(X_test)
-
-# # Model evaluation
-# accuracy_rf = accuracy_score(y_test, y_pred_rf)
-# print("\nRandomForest Classification Report:")
-# print(classification_report(y_test, y_pred_rf))
-
-# # Print accuracy
-# print(f"\nFinal RandomForest Model Accuracy: {accuracy_rf * 100:.2f}%")
-
-# # Save the best model
-# joblib.dump(best_rf, "pcos_rf_model.pkl")
-# print("Best RandomForest model saved as pcos_rf_model.pkl!")
-
 import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -91,7 +10,7 @@ from sklearn.ensemble import VotingClassifier
 
 # Load dataset
 print("Loading dataset...")
-df = pd.read_csv(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\Balanced_PCOS_Dataset.csv")
+df = pd.read_csv(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\Final_PCOS_Dataset.csv", encoding='latin-1')
 print("Dataset loaded successfully!")
 
 # Standardize column names

@@ -8,14 +8,14 @@ app = Flask(__name__)
 
 # Load the saved model
 print("Loading the saved model...")
-model = joblib.load("pcos_ensemble_model.pkl")
+model = joblib.load("pcos_model.pkl")
 print("Model loaded successfully! Model details:", model)
 
 # Load YOLO models for acne and hirsutism detection
 print("Loading YOLO models...")
 acne_model = YOLO(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\runs\detect\train\weights\best.pt")  # Acne detection
 hirsutism_model = YOLO(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\runs\detect\train2\weights\best.pt")  # Hirsutism detection
-skin_darkening_model = YOLO(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\runs\detect\train\weights\best.pt")  # Skin darkening detection
+skin_darkening_model = YOLO(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\runs\detect\train3\weights\best.pt")  # Skin darkening detection
 print("YOLO models loaded successfully!")
 
 # Blood group mapping
