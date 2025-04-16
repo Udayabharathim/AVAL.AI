@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-image: url("static/bg.png"); /* Ensure the image exists in the static folder */
+            background-image: url("static/bg.png");
             background-size: cover;
             background-position: center;
             font-family: 'Arial Black', sans-serif;
@@ -15,24 +15,24 @@
         .chat-container {
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            padding: 20px; /* Reduced padding */
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 90%; /* Set width to 90% of the parent container */
-            max-width: 600px; /* Reduced max-width */
-            margin: 0 auto; /* Center the container horizontally */
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
         }
         .chat {
-            margin-bottom: 10px; /* Reduced margin */
+            margin-bottom: 10px;
         }
         .chat-bot {
             display: flex;
             align-items: center;
         }
         .chat-bot img {
-            width: 60px; /* Reduced logo size */
-            height: 60px; /* Reduced logo size */
+            width: 60px;
+            height: 60px;
             border-radius: 100%;
-            margin-right: 10px; /* Reduced margin */
+            margin-right: 10px;
         }
         .chat-user {
             display: flex;
@@ -40,37 +40,37 @@
             align-items: center;
         }
         .chat-user img {
-            width: 45px; /* Reduced logo size */
-            height: 45px; /* Reduced logo size */
+            width: 45px;
+            height: 45px;
             border-radius: 100%;
-            margin-left: 10px; /* Reduced margin */
+            margin-left: 10px;
         }
         .chat-bot .text, .chat-user .text {
             background-color: #f3f3f3;
-            padding: 10px; /* Reduced padding */
+            padding: 10px;
             border-radius: 10px;
-            max-width: 100%; /* Allow text to take full width */
-            font-size: 20px; /* Reduced font size */
-            line-height: 1.4; /* Adjusted line height for better readability */
-            word-wrap: break-word; /* Ensure text wraps instead of cutting off */
-            overflow-wrap: break-word; /* Ensure text wraps */
-            white-space: normal; /* Allow text to wrap naturally */
+            max-width: 100%;
+            font-size: 20px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
         }
         .chat-user .text {
-            background-color:  #f58aae;
+            background-color: #f58aae;
         }
         .input-box {
             display: flex;
-            flex-direction: column; /* Stack input and button vertically */
-            gap: 10px; /* Reduced gap */
-            margin-top: 20px; /* Reduced margin */
-            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            display: none;
         }
         .input-box input, .input-box button {
-            padding: 10px; /* Reduced padding */
+            padding: 10px;
             border-radius: 50px;
             border: 1px solid #ccc;
-            font-size: 20px; /* Reduced font size for input and button */
+            font-size: 20px;
         }
         .input-box input {
             flex: 1;
@@ -81,58 +81,53 @@
             cursor: pointer;
             padding: 10px;
             font-size: 15px;
-            width: 60px; /* Reduced width */
+            width: 60px;
         }
         .input-box button:hover {
             background-color: #e91e63;
         }
         #chatbot {
-            max-height: 300px; /* Reduced height for scrollable area */
-            overflow-y: auto; /* Enable vertical scrolling */
-            padding-right: 10px; /* Add padding to avoid scrollbar overlap */
-            display: none; /* Hidden by default */
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+            display: none;
         }
         #startContainer {
             text-align: center;
             margin-bottom: 20px;
         }
         #startContainer h1 {
-            font-size: 30px; /* Reduced font size */
+            font-size: 30px;
             margin-bottom: 20px;
             font-weight: bold;
             font-family: 'Arial Black', sans-serif;
         }
         #startButton {
-            background-color: #4CAF50; /* Green color */
+            background-color: #4CAF50;
             color: white;
-            padding: 10px 20px; /* Reduced padding */
+            padding: 10px 20px;
             border: none;
             border-radius: 10px;
-            font-size: 20px; /* Reduced font size */
+            font-size: 20px;
             cursor: pointer;
         }
         #startButton:hover {
-            background-color: #45a049; /* Darker green on hover */
+            background-color: #45a049;
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
     <div class="chat-container">
-        <!-- Start Container -->
         <div id="startContainer">
             <h1>Let's Predict Whether You Have PCOS or Not</h1>
             <button id="startButton">Start</button>
         </div>
 
-        <!-- Chatbot -->
-        <div id="chatbot">
-            <!-- Chatbot messages will appear here -->
-        </div>
+        <div id="chatbot"></div>
 
-        <!-- Input Container -->
         <div class="input-box" id="inputContainer">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <input type="text" id="userInput" placeholder="Type your answer..." />
+                <input type="text" id="userInput" placeholder="Type your answer...">
                 <img src="static/user-logo.png" alt="User" style="width: 45px; height: 45px; border-radius: 100%;">
             </div>
             <div style="display: flex; justify-content: flex-end;">
@@ -155,7 +150,9 @@
             "Do you experience mood swings? (yes/no)",
             "Are your periods regular? (yes/no)",
             "What is your period duration (in days)?",
-            "Please upload an image for acne, facial hair, and skin darkening detection."
+            "Do you experience skin darkening? (yes/no)",
+            "Do you have excess facial/body hair? (yes/no)",
+            "Please upload an image for acne detection."
         ];
 
         const chatbot = document.getElementById("chatbot");
@@ -166,7 +163,6 @@
         let currentQuestion = 0;
         const answers = {};
 
-        // Function to display text with a typing effect
         function typeText(element, text, speed = 50) {
             let index = 0;
             return new Promise((resolve) => {
@@ -185,7 +181,6 @@
 
         async function displayQuestion() {
             if (currentQuestion >= questions.length) {
-                // All questions answered, send data to the backend
                 sendDataToBackend();
                 return;
             }
@@ -204,7 +199,7 @@
             inputContainer.style.display = "flex";
             if (questions[currentQuestion].includes("upload")) {
                 userInput.type = "file";
-                userInput.accept = "image/*"; // Allow only image files
+                userInput.accept = "image/*";
             } else {
                 userInput.type = "text";
             }
@@ -214,7 +209,6 @@
         function submitAnswer() {
             if (userInput.value.trim() === "" && userInput.type !== "file") return;
 
-            // Capture user answer
             const userDiv = document.createElement("div");
             userDiv.className = "chat chat-user";
             userDiv.innerHTML = `
@@ -223,45 +217,41 @@
             `;
             chatbot.appendChild(userDiv);
 
-            // Save the answer
             answers[questions[currentQuestion]] = userInput.type === "file" ? userInput.files[0] : userInput.value;
             userInput.value = "";
 
             currentQuestion++;
             displayQuestion();
         }
+
         function sendDataToBackend() {
-    const formData = new FormData();
+            const formData = new FormData();
+            for (const [question, answer] of Object.entries(answers)) {
+                if (answer instanceof File) {
+                    formData.append("image", answer);
+                } else {
+                    formData.append(question, answer);
+                }
+            }
 
-    // Add all answers to the FormData object
-    for (const [question, answer] of Object.entries(answers)) {
-        if (answer instanceof File) {
-            formData.append("image", answer); // Append the uploaded file under the key "image"
-        } else {
-            formData.append(question, answer); // Append other form data
+            fetch("/chatbot", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = `/result?result=${data.result}&acne_detected=${data.acne_detected}&hirsutism_detected=${data.hirsutism_detected}&skin_darkening_detected=${data.skin_darkening_detected}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
         }
-    }
 
-    // Send the data to the backend using fetch
-    fetch("/chatbot", {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Redirect to the result page
-        window.location.href = `/result?result=${data.result}&acne_detected=${data.acne_detected}&hirsutism_detected=${data.hirsutism_detected}&skin_darkening_detected=${data.skin_darkening_detected}`;
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
-}
-        // Start the chatbot when the Start button is clicked
         startButton.addEventListener("click", () => {
-            startContainer.style.display = "none"; // Hide the start container
-            chatbot.style.display = "block"; // Show the chatbot
-            inputContainer.style.display = "flex"; // Show the input container
-            displayQuestion(); // Start the chatbot
+            startContainer.style.display = "none";
+            chatbot.style.display = "block";
+            inputContainer.style.display = "flex";
+            displayQuestion();
         });
     </script>
 </body>
