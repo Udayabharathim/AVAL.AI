@@ -62,7 +62,7 @@ def chatbot():
         hair_loss = 1 if form_data["Do you experience hair loss? (yes/no)"].lower() == "yes" else 0
         fast_food = 1 if form_data["Do you consume fast food regularly? (yes/no)"].lower() == "yes" else 0
         exercise = 1 if form_data["Do you exercise regularly? (yes/no)"].lower() == "yes" else 0
-        mood_swings = 1 if form_data["Do you experience mood swings? (yes/no)"].lower() == "yes" else 0
+        mood_swings = 1 if form_data["Do you experience extreme mood swings? (yes/no)"].lower() == "yes" else 0
         regular_periods = 1 if form_data["Are your periods regular? (yes/no)"].lower() == "yes" else 0
         
         # New yes/no questions
