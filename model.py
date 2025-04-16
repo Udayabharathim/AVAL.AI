@@ -13,7 +13,7 @@ from imblearn.pipeline import Pipeline
 
 # Load dataset
 print("Loading dataset...")
-df = pd.read_csv(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\Final_PCOS_Dataset_2000.csv", encoding='latin-1')
+df = pd.read_csv(r"C:\Users\Elitebook 840 G6\Documents\AVAL2\data\Final_PCOS_Dataset_4000.csv", encoding='latin-1')
 print(df['pcos'].value_counts())
 # Clean column names
 df.columns = df.columns.str.strip().str.lower().str.replace(r"[^\w]", "_", regex=True)
