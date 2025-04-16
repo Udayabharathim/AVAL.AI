@@ -9,7 +9,7 @@ app.secret_key = 'supersecretkey'
 
 # Load the saved model
 print("Loading the saved model...")
-model = joblib.load("optimized_pcos_model.pkl")
+model = joblib.load("pcos_ensemble_model.pkl")
 print("Model loaded successfully! Model details:", model)
 
 # Load YOLO model for acne detection only
