@@ -1,4 +1,7 @@
+result.html
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,71 +10,91 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            
             background-image: url("{{ url_for('static', filename='bg.png') }}");
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             font-family: 'Arial Black', sans-serif;
         }
-        .card {
-            background: rgb(255, 255, 255);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .text-white {
-            color: #fff;
-        }
-        .arial-black {
-            font-family: 'Arial Black', sans-serif;
-        }
-        .result-text {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .button {
-            transition: all 0.3s ease-in-out;
-            font-size: 1.2rem;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
+        .result-title {
+            font-size: 30px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
-        .button:hover {
-            transform: scale(1.05);
+        .result-item {
+            margin-bottom: 15px;
+            background-color: #f3f3f3;
+            padding: 15px;
+            border-radius: 10px;
         }
-        .glow-text {
-            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.8);
+        .result-badge {
+            background-color: #e91e63;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
-    <!-- Card Container -->
-    <div class="card text-center w-full max-w-2xl">
-        <!-- Title -->
-        <h1 class="text-5xl font-bold text-black mb-6 arial-black glow-text">PCOS Prediction Result</h1>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="result-container">
+        <h1 class="result-title text-center">PCOS Prediction Result</h1>
 
-        <!-- Prediction Result -->
-        <div class="result-text">
-            <p class="text-3xl text-black"><strong>Prediction:</strong> <span class="glow-text">{{ result }}</span></p>
+```
+    <!-- Model Prediction -->
+    <div class="result-item">
+        <h2 class="text-2xl font-bold">Model Analysis</h2>
+        <div class="flex justify-between items-center">
+          <span class="text-2xl font-bold">Prediction:</span>
+          <span class="result-badge">{{ form_result }}</span>
         </div>
+      </div>
+```
 
-        <!-- Acne, Hirsutism, and Skin Darkening Results -->
-        <div class="mt-6 space-y-3 text-black">
-            <p class="text-2xl"><strong>Acne Detected:</strong> {{ acne_detected }}</p>
-            <p class="text-2xl"><strong>Hirsutism Detected:</strong> {{ hirsutism_detected }}</p>
-            <p class="text-2xl"><strong>Skin Darkening Detected:</strong> {{ skin_darkening_detected }}</p>
-        </div>
+  <!-- Acne Detection -->
 
-        <!-- Go Back Home Button -->
-        <div class="mt-8">
-            <a href="/" class="button bg-green-500 text-white hover:bg-green-600">
-                Go Back Home 🏠
-            </a>
-        </div>
+  <div class="result-item">
+    <h2 class="text-2xl font-bold">Skin Analysis (Yolo-Model)</h2>
+    <div class="flex justify-between items-center">
+      <span class="text-2xl font-bold">Acne Detected:</span>
+      <span class="result-badge">{{ acne_detected }}</span>
     </div>
+  </div>
+
+```
+    <!-- Additional Markers -->
+    <div class="result-item">
+        <h2 class="text-2xl font-bold">Additional Markers</h2>
+        <p class="text-2xl font-bold">Hirsutism: {{ hirsutism_detected }}</p>
+        <p class="text-2xl font-bold">Skin Darkening: {{ skin_darkening_detected }}</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="mt-8 text-center">
+        <a href="/" class="button">🏠 Return Home</a>
+    </div>
+</div>
+```
+
 </body>
 </html>

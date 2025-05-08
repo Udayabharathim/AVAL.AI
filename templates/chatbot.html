@@ -136,123 +136,132 @@
         </div>
     </div>
 
-    <script>
-        const questions = [
-            "What is your age (in years)?",
-            "What is your current weight (in kg)?",
-            "What was your weight 3 months ago (in kg)?",
-            "What is your height (in cm)?",
-            "What is your blood group?",
-            "How many months between your periods?",
-            "Do you experience hair loss? (yes/no)",
-            "Do you consume fast food regularly? (yes/no)",
-            "Do you exercise regularly? (yes/no)",
-            "Do you experience extreme mood swings? (yes/no)",
-            "Are your periods regular? (yes/no)",
-            "What is your period duration (in days)?",
-            "Do you experience skin darkening? (yes/no)",
-            "Do you have excess facial/body hair? (yes/no)",
-            "Please upload an image for acne detection."
-        ];
+<script>
+    const questions = [
+        { text: "What is your age (in years)?", key: "age" },
+        { text: "What is your current weight (in kg)?", key: "weight_now" },
+        { text: "What was your weight 3 months ago (in kg)?", key: "weight_3_months_ago" },
+        { text: "What is your height (in cm)?", key: "height" },
+        { text: "What is your blood group?", key: "blood_group" },
+        { text: "How many months between your periods?", key: "months_between_periods" },
+        { text: "What is your period duration (in days)?", key: "period_duration" },
+        { text: "Do you experience hair loss? (yes/no)", key: "hair_loss" },
+        { text: "Do you consume fast food regularly? (yes/no)", key: "fast_food" },
+        { text: "Do you exercise regularly? (yes/no)", key: "exercise" },
+        { text: "Do you experience extreme mood swings? (yes/no)", key: "mood_swings" },
+        { text: "Are your periods regular? (yes/no)", key: "regular_periods" },
+        { text: "Do you experience skin darkening? (yes/no)", key: "skin_darkening" },
+        { text: "Do you have excess facial/body hair? (yes/no)", key: "excess_facial_hair" },
+        { text: "Please upload an image for acne detection.", key: "acne_image", type: "file" },
+    ];
 
-        const chatbot = document.getElementById("chatbot");
-        const userInput = document.getElementById("userInput");
-        const inputContainer = document.getElementById("inputContainer");
-        const startContainer = document.getElementById("startContainer");
-        const startButton = document.getElementById("startButton");
-        let currentQuestion = 0;
-        const answers = {};
+    const chatbot = document.getElementById("chatbot");
+    const userInput = document.getElementById("userInput");
+    const inputContainer = document.getElementById("inputContainer");
+    const startContainer = document.getElementById("startContainer");
+    const startButton = document.getElementById("startButton");
+    let currentQuestion = 0;
+    const answers = {};
 
-        function typeText(element, text, speed = 50) {
-            let index = 0;
-            return new Promise((resolve) => {
-                function type() {
-                    if (index < text.length) {
-                        element.textContent += text.charAt(index);
-                        index++;
-                        setTimeout(type, speed);
-                    } else {
-                        resolve();
-                    }
+    function typeText(element, text, speed = 50) {
+        let index = 0;
+        return new Promise((resolve) => {
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, speed);
+                } else {
+                    resolve();
                 }
-                type();
-            });
+            }
+            type();
+        });
+    }
+
+    async function displayQuestion() {
+        if (currentQuestion >= questions.length) {
+            sendDataToBackend();
+            return;
         }
 
-        async function displayQuestion() {
-            if (currentQuestion >= questions.length) {
-                sendDataToBackend();
+        const botDiv = document.createElement("div");
+        botDiv.className = "chat chat-bot";
+        botDiv.innerHTML = `
+            <img src="static/chtbot-logo.png" alt="Chatbot">
+            <div class="text"></div>
+        `;
+        chatbot.appendChild(botDiv);
+
+        const textElement = botDiv.querySelector(".text");
+        await typeText(textElement, questions[currentQuestion].text);
+
+        userInput.value = "";
+        if (questions[currentQuestion].type === 'file') {
+            userInput.type = "file";
+            userInput.accept = "image/*";
+        } else {
+            userInput.type = "text";
+            userInput.accept = "";
+        }
+
+        inputContainer.style.display = "flex";
+        userInput.focus();
+    }
+
+    function submitAnswer() {
+        if (userInput.value.trim() === "" && userInput.type !== "file") return;
+
+        const userDiv = document.createElement("div");
+        userDiv.className = "chat chat-user";
+        userDiv.innerHTML = `
+            <div class="text">${userInput.type === "file" ? "File uploaded" : userInput.value}</div>
+            <img src="static/user-logo.png" alt="User">
+        `;
+        chatbot.appendChild(userDiv);
+
+        answers[questions[currentQuestion].key] = userInput.type === "file" ? userInput.files[0] : userInput.value;
+        userInput.value = "";
+
+        currentQuestion++;
+        displayQuestion();
+    }
+
+    function sendDataToBackend() {
+        const formData = new FormData();
+
+        questions.forEach(question => {
+            const answer = answers[question.key];
+            if (answer instanceof File) {
+                formData.append(question.key, answer);
+            } else {
+                formData.append(question.key, answer);
+            }
+        });
+
+        fetch("/chatbot", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
                 return;
             }
-
-            const botDiv = document.createElement("div");
-            botDiv.className = "chat chat-bot";
-            botDiv.innerHTML = `
-                <img src="static/chtbot-logo.png" alt="Chatbot">
-                <div class="text"></div>
-            `;
-            chatbot.appendChild(botDiv);
-
-            const textElement = botDiv.querySelector(".text");
-            await typeText(textElement, questions[currentQuestion]);
-
-            inputContainer.style.display = "flex";
-            if (questions[currentQuestion].includes("upload")) {
-                userInput.type = "file";
-                userInput.accept = "image/*";
-            } else {
-                userInput.type = "text";
-            }
-            userInput.focus();
-        }
-
-        function submitAnswer() {
-            if (userInput.value.trim() === "" && userInput.type !== "file") return;
-
-            const userDiv = document.createElement("div");
-            userDiv.className = "chat chat-user";
-            userDiv.innerHTML = `
-                <div class="text">${userInput.type === "file" ? "File uploaded" : userInput.value}</div>
-                <img src="static/user-logo.png" alt="User">
-            `;
-            chatbot.appendChild(userDiv);
-
-            answers[questions[currentQuestion]] = userInput.type === "file" ? userInput.files[0] : userInput.value;
-            userInput.value = "";
-
-            currentQuestion++;
-            displayQuestion();
-        }
-
-        function sendDataToBackend() {
-            const formData = new FormData();
-            for (const [question, answer] of Object.entries(answers)) {
-                if (answer instanceof File) {
-                    formData.append("image", answer);
-                } else {
-                    formData.append(question, answer);
-                }
-            }
-
-            fetch("/chatbot", {
-                method: "POST",
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = `/result?result=${data.result}&acne_detected=${data.acne_detected}&hirsutism_detected=${data.hirsutism_detected}&skin_darkening_detected=${data.skin_darkening_detected}`;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-        }
-
-        startButton.addEventListener("click", () => {
-            startContainer.style.display = "none";
-            chatbot.style.display = "block";
-            inputContainer.style.display = "flex";
-            displayQuestion();
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error processing request");
         });
-    </script>
+    }
+
+    startButton.addEventListener("click", () => {
+        startContainer.style.display = "none";
+        chatbot.style.display = "block";
+        inputContainer.style.display = "flex";
+        displayQuestion();
+    });
+</script>
 </body>
 </html>
