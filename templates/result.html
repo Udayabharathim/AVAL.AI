@@ -1,7 +1,4 @@
-result.html
-
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -60,41 +57,35 @@ result.html
     <div class="result-container">
         <h1 class="result-title text-center">PCOS Prediction Result</h1>
 
-```
-    <!-- Model Prediction -->
-    <div class="result-item">
-        <h2 class="text-2xl font-bold">Model Analysis</h2>
-        <div class="flex justify-between items-center">
-          <span class="text-2xl font-bold">Prediction:</span>
-          <span class="result-badge">{{ form_result }}</span>
+        <!-- Model Prediction -->
+        <div class="result-item">
+            <h2 class="text-2xl font-bold">Model Analysis</h2>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold">Prediction:</span>
+                <span class="result-badge">{{ form_result }}</span>
+            </div>
         </div>
-      </div>
-```
 
-  <!-- Acne Detection -->
+        <!-- Acne Detection -->
+        <div class="result-item">
+            <h2 class="text-2xl font-bold">Skin Analysis (Yolo-Model)</h2>
+            <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold">Acne Detected:</span>
+                <span class="result-badge">{{ acne_detected }}</span>
+            </div>
+        </div>
 
-  <div class="result-item">
-    <h2 class="text-2xl font-bold">Skin Analysis (Yolo-Model)</h2>
-    <div class="flex justify-between items-center">
-      <span class="text-2xl font-bold">Acne Detected:</span>
-      <span class="result-badge">{{ acne_detected }}</span>
+        <!-- Additional Markers -->
+        <div class="result-item">
+            <h2 class="text-2xl font-bold">Additional Markers</h2>
+            <p class="text-2xl font-bold">Hirsutism: {{ hirsutism_detected }}</p>
+            <p class="text-2xl font-bold">Skin Darkening: {{ skin_darkening_detected }}</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-8 text-center">
+            <a href="/" class="button">🏠 Return Home</a>
+        </div>
     </div>
-  </div>
-
-```
-    <!-- Additional Markers -->
-    <div class="result-item">
-        <h2 class="text-2xl font-bold">Additional Markers</h2>
-        <p class="text-2xl font-bold">Hirsutism: {{ hirsutism_detected }}</p>
-        <p class="text-2xl font-bold">Skin Darkening: {{ skin_darkening_detected }}</p>
-    </div>
-
-    <!-- Navigation -->
-    <div class="mt-8 text-center">
-        <a href="/" class="button">🏠 Return Home</a>
-    </div>
-</div>
-```
-
 </body>
 </html>
